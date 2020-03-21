@@ -11,7 +11,7 @@ public class Interacting : MonoBehaviour
     private bool _canGrab = false;
     private bool _canMakeAction = false;
     private bool _canUseItem = false;
-    
+    private List<ItemStage> _itemStages = null;
     private void Awake()
     {
         GrabButton.OnGrabPressed += Grabbed;
@@ -37,6 +37,7 @@ public class Interacting : MonoBehaviour
             _canGrab = _interactable.CanGrab;
             _canMakeAction = _interactable.CanMakeAction;
             _canUseItem = _interactable.CanUseItem;
+            _itemStages = _interactable.ItemStages;
         }
 
         return _interactable != null;
@@ -51,8 +52,22 @@ public class Interacting : MonoBehaviour
     {
         if(_canMakeAction) _interactable?.Action(gameObject);
     }
-    private void InventorySlotUse(int index)
+    private void InventorySlotUse(int index, Item item)
     {
-        if(_canUseItem) _interactable?.ItemUsage(gameObject, index);
+        if (_canUseItem && CheckItemUsabality(item))
+        {
+            _interactable?.ItemUsage(gameObject, index, item);
+        }
+    }
+    private bool CheckItemUsabality(Item item)
+    {
+        var tempCondition = false;
+        for (var i = 0; i < _itemStages.Count; i++)
+        {
+            if (_itemStages[i] == item.itemStage)
+                tempCondition = true;
+        }
+
+        return tempCondition;
     }
 }

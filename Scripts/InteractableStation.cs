@@ -7,7 +7,7 @@ public abstract class InteractableStation : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject grabSprite = null;
     [SerializeField] private GameObject actionSprite = null;
-    
+    [SerializeField] private List<ItemStage> itemStages = null;
     public bool canGrabFrom = false;
     public bool canMakeAction = false;
     public bool canUseItem = false;
@@ -41,6 +41,8 @@ public abstract class InteractableStation : MonoBehaviour, IInteractable
     public bool CanMakeAction => canMakeAction;
 
     public bool CanUseItem => canUseItem;
+    public List<ItemStage> ItemStages => itemStages;
+
     public virtual void Interact(GameObject player)
     {
         throw new NotImplementedException();
@@ -50,7 +52,7 @@ public abstract class InteractableStation : MonoBehaviour, IInteractable
     {
         throw new NotImplementedException();
     }
-    public virtual void ItemUsage(GameObject player, int index)
+    public virtual void ItemUsage(GameObject player, int index, Item item)
     {
         throw new NotImplementedException();
     }
